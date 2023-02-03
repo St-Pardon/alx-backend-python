@@ -167,7 +167,7 @@ Repo:
 ### [8. Complex types - functions](./8-make_multiplier.py)
 Write a type-annotated function `make_multiplier` that takes a float multiplier as argument and returns a function that multiplies a float by multiplier.
 ```bash
-bob@dylan:~$ cat 8-main.py
+:~$ cat 8-main.py
 #!/usr/bin/env python3
 
 make_multiplier = __import__('8-make_multiplier').make_multiplier
@@ -175,7 +175,7 @@ print(make_multiplier.__annotations__)
 fun = make_multiplier(2.22)
 print("{}".format(fun(2.22)))
 
-bob@dylan:~$ ./8-main.py
+:~$ ./8-main.py
 {'multiplier': <class 'float'>, 'return': typing.Callable[[float], float]}
 4.928400000000001
 ```
@@ -220,4 +220,65 @@ print(safe_first_element.__annotations__)
 
 :~$ ./100-main.py 
 {'lst': typing.Sequence[typing.Any], 'return': typing.Union[typing.Any, NoneType]}
+```
+
+### [11. More involved type annotations](./101-safely_get_value.py)
+Given the parameters and the return values, add type annotations to the function
+
+Hint: look into TypeVar
+```py
+def safely_get_value(dct, key, default = None):
+    if key in dct:
+        return dct[key]
+    else:
+        return default
+```
+```bash
+:~$ cat 101-main.py 
+#!/usr/bin/env python3
+
+safely_get_value = __import__('101-safely_get_value').safely_get_value
+annotations = safely_get_value.__annotations__
+
+print("Here's what the mappings should look like")
+for k, v in annotations.items():
+    print( ("{}: {}".format(k, v)))
+
+:~$ ./101-main.py 
+Here's what the mappings should look like
+dct: typing.Mapping
+key: typing.Any
+default: typing.Union[~T, NoneType]
+return: typing.Union[typing.Any, ~T]
+```
+   
+### [12. Type Checking](./102-type_checking.py)
+Use mypy to validate the following piece of code and apply any necessary changes.
+```py
+def zoom_array(lst: Tuple, factor: int = 2) -> Tuple:
+    zoomed_in: Tuple = [
+        item for item in lst
+        for i in range(factor)
+    ]
+    return zoomed_in
+
+
+array = [12, 72, 91]
+
+zoom_2x = zoom_array(array)
+
+zoom_3x = zoom_array(array, 3.0)
+```
+```bash
+:~$ mypy 102-type_checking.py
+Success: no issues found in 1 source file
+:~$ cat 102-main.py 
+#!/usr/bin/env python3
+
+zoom_array =  __import__('102-type_checking').zoom_array
+
+print(zoom_array.__annotations__)
+
+:~$ ./102-main.py 
+{'lst': typing.Tuple, 'factor': <class 'int'>, 'return': typing.List}
 ```
