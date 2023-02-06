@@ -50,3 +50,71 @@ print(asyncio.run(wait_n(10, 0)))
 [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 ```
 The output for your answers might look a little different and that’s okay.
+
+
+### [2. Measure the runtime](./2-measure_runtime.py)
+From the previous file, import `wait_n` into `2-measure_runtime.py`.
+
+Create a `measure_time` function with integers `n` and `max_delay` as arguments that measures the total execution time for `wait_n(n, max_delay)`, and returns `total_time / n`. Your function should return a float.
+
+Use the time module to measure an approximate elapsed time.
+```bash
+:~$ cat 2-main.py
+#!/usr/bin/env python3
+
+measure_time = __import__('2-measure_runtime').measure_time
+
+n = 5
+max_delay = 9
+
+print(measure_time(n, max_delay))
+
+:~$ ./2-main.py
+1.759705400466919
+```
+
+
+
+### [3. Tasks](./3-tasks.py)
+Import `wait_random` from `0-basic_async_syntax`.
+
+Write a function (do not create an async function, use the regular function syntax to do this) `task_wait_random` that takes an integer `max_delay` and returns a `asyncio.Task`.
+```bash
+:~$ cat 3-main.py
+#!/usr/bin/env python3
+
+import asyncio
+
+task_wait_random = __import__('3-tasks').task_wait_random
+
+
+async def test(max_delay: int) -> float:
+    task = task_wait_random(max_delay)
+    await task
+    print(task.__class__)
+
+asyncio.run(test(5))
+
+:~$ ./3-main.py
+<class '_asyncio.Task'>
+```
+
+
+
+### [4. Tasks](./4-tasks.py)
+Take the code from `wait_n` and alter it into a new function `ask_wait_n`. The code is nearly identical to `wait_n` except task_wait_random is being called.
+```bash
+:~$ cat 4-main.py
+#!/usr/bin/env python3
+
+import asyncio
+
+task_wait_n = __import__('4-tasks').task_wait_n
+
+n = 5
+max_delay = 6
+print(asyncio.run(task_wait_n(n, max_delay)))
+
+:~$ ./4-main.py
+[0.2261658205652346, 1.1942770588220557, 1.8410422186086628, 2.1457353803430523, 4.002505454641153]
+```
